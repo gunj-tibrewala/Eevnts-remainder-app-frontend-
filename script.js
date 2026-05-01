@@ -73,6 +73,11 @@ async function loadEvents() {
         let upcoming = [];
         let past = [];
 
+        let countEl = document.getElementById("eventCount");
+        if (countEl) {
+            countEl.innerText = "Total Events: " + data.length;
+        }
+
         data.forEach(event => {
             let eventDateTime = new Date(`${event.date}T${event.time}`);
             if (eventDateTime >= now) {

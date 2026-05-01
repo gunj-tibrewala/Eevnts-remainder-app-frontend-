@@ -10,6 +10,9 @@
 body {
     min-height: 100vh;
     background-color: #f3f4f6;
+    background-image: url('bg.png');
+    background-repeat: repeat;
+    background-size: 300px;
     color: #1f2937;
     display: flex;
     flex-direction: column;
@@ -60,6 +63,9 @@ body {
 header {
     text-align: center;
     margin-bottom: 30px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    border-radius: 8px;
 }
 
 header h1 {
