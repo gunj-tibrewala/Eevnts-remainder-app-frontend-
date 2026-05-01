@@ -3,16 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Remainder App</title>
+    <title>Event Reminder</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <input type="text" id="title" placeholder="Event Title">
-    <input type="date" id="date">
-    <input type="time" id="time">
-    <button type="submit">Add Event</button>
-    <ul id="eventlist"></ul>
+    <main class="container">
+        <header>
+            <h1>Event Reminder</h1>
+            <p>Never miss an important moment</p>
+        </header>
+
+        <section class="form-section">
+            <div class="input-group">
+                <input type="text" id="title" placeholder="Event Title">
+            </div>
+            <div class="input-row">
+                <div class="input-group">
+                    <input type="date" id="date">
+                </div>
+                <div class="input-group">
+                    <input type="time" id="time">
+                </div>
+            </div>
+            <button class="btn-primary" onclick="addEvent(event)">Add Event</button>
+        </section>
+
+        <section class="list-section">
+            <ul id="eventList"></ul>
+        </section>
+    </main>
     <script src="script.js"></script>
-    
 </body>
 </html>
