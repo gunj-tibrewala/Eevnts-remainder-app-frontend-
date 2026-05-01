@@ -11,19 +11,20 @@ body {
     min-height: 100vh;
     /* Premium Modern Gradient */
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    color: #2d3748;
+    color: #2563eb; /* Everything in blue */
+    font-size: 18px; /* Increased base text size */
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center; /* Center vertically */
 }
 
-/* Navbar */
 .navbar {
     background-color: rgba(255, 255, 255, 0.95);
-    padding: 18px 0;
+    padding: 18px 40px; /* Added padding for edges */
     width: 100%;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    position: sticky;
+    position: absolute; /* Changed from sticky so it doesn't mess with center align */
     top: 0;
     z-index: 100;
 }
@@ -31,20 +32,26 @@ body {
 .navbar ul {
     list-style-type: none;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     gap: 40px;
+    width: 100%;
+}
+
+.navbar li:first-child {
+    margin-right: auto; /* Pushes the first item (Home) to the far left */
 }
 
 .navbar a {
-    color: #4a5568;
+    color: #1d4ed8; /* Darker blue for links */
     text-decoration: none;
-    font-weight: 600;
-    font-size: 16px;
+    font-weight: 700; /* Bolder */
+    font-size: 18px; /* Increased */
     letter-spacing: 0.5px;
     transition: color 0.3s ease;
 }
 
-.navbar a:hover, .navbar a.active {
+.navbar a:hover,
+.navbar a.active {
     color: #667eea;
 }
 
@@ -67,7 +74,8 @@ header {
 
 header h1 {
     font-size: 32px;
-    color: #2563eb; /* Nice vibrant blue */
+    color: #2563eb;
+    /* Nice vibrant blue */
     font-weight: 700;
     letter-spacing: -0.5px;
     margin-bottom: 8px;
@@ -184,7 +192,7 @@ input:focus {
 
 .list-section li:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 15px rgba(0,0,0,0.05);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.05);
     border-color: #cbd5e0;
 }
 
@@ -247,17 +255,17 @@ input:focus {
         flex-direction: column;
         gap: 15px;
     }
-    
+
     .navbar ul {
         gap: 20px;
     }
-    
+
     .list-section li {
         flex-direction: column;
         align-items: flex-start;
         gap: 15px;
     }
-    
+
     .btn-delete {
         width: 100%;
         text-align: center;

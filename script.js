@@ -10,7 +10,7 @@ async function addEvent(event) {
     let titleInput = document.getElementById("title");
     let dateInput = document.getElementById("date");
     let timeInput = document.getElementById("time");
-    
+
     let title = titleInput.value;
     let date = dateInput.value;
     let time = timeInput.value;
@@ -42,14 +42,14 @@ async function addEvent(event) {
         }
 
         let data = await response.json();
-        
+
         // Clear inputs
         titleInput.value = "";
         dateInput.value = "";
         timeInput.value = "";
-        
+
         alert("Event added successfully!");
-        
+
         // Redirect to Home page
         window.location.href = "index.html";
     } catch (error) {
@@ -65,9 +65,9 @@ async function loadEvents() {
     try {
         let response = await fetch("http://127.0.0.1:5000/get-events");
         let data = await response.json();
-        
-        if(list) list.innerHTML = "";
-        if(pastList) pastList.innerHTML = "";
+
+        if (list) list.innerHTML = "";
+        if (pastList) pastList.innerHTML = "";
 
         let now = new Date();
         let upcoming = [];
@@ -110,14 +110,14 @@ async function loadEvents() {
 function createEventElement(event, isPast) {
     let li = document.createElement("li");
     if (isPast) li.className = "past-event";
-    
+
     let detailsDiv = document.createElement("div");
     detailsDiv.className = "event-details";
-    
+
     let titleSpan = document.createElement("div");
     titleSpan.className = "event-title";
     titleSpan.innerText = event.title;
-    
+
     let timeSpan = document.createElement("div");
     timeSpan.className = "event-time";
     timeSpan.innerText = "🕒 " + event.date + " at " + event.time;
@@ -131,10 +131,10 @@ function createEventElement(event, isPast) {
 
     detailsDiv.appendChild(titleSpan);
     detailsDiv.appendChild(timeSpan);
-    
+
     li.appendChild(detailsDiv);
     li.appendChild(deleteBtn);
-    
+
     return li;
 }
 
@@ -143,7 +143,7 @@ async function deleteEvent(eventId) {
         let response = await fetch("http://127.0.0.1:5000/delete-event/" + eventId, {
             method: "DELETE"
         });
-        
+
         let data = await response.json();
         loadEvents();
     } catch (error) {
