@@ -20,17 +20,20 @@
 
         <section class="form-section">
             <div class="input-group">
-                <input type="text" id="title" placeholder="Event Title">
+                <label for="title">Event Title</label>
+                <input type="text" id="title" placeholder="e.g., Team Meeting">
             </div>
             <div class="input-row">
                 <div class="input-group">
+                    <label for="date">Date</label>
                     <input type="date" id="date">
                 </div>
                 <div class="input-group">
+                    <label for="time">Time</label>
                     <input type="time" id="time">
                 </div>
             </div>
-            <button class="btn-primary" onclick="addEvent(event)">Add Event</button>
+            <button class="btn-primary" onclick="addEvent(event)">✨ Add Event</button>
         </section>
     </main>
     <script src="script.js"></script>

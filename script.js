@@ -120,11 +120,11 @@ function createEventElement(event, isPast) {
     
     let timeSpan = document.createElement("div");
     timeSpan.className = "event-time";
-    timeSpan.innerText = event.date + " at " + event.time;
+    timeSpan.innerText = "🕒 " + event.date + " at " + event.time;
 
     let deleteBtn = document.createElement("button");
     deleteBtn.className = "btn-delete";
-    deleteBtn.innerText = "Delete";
+    deleteBtn.innerText = "❌ Delete";
     deleteBtn.onclick = () => {
         deleteEvent(event.id);
     };
