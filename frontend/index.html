@@ -7,26 +7,16 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="add-event.html">Add Event</a></li>
+        </ul>
+    </nav>
     <main class="container">
         <header>
-            <h1>Event Reminder</h1>
-            <p>Never miss an important moment</p>
+            <h1>Event Reminder Home</h1>
         </header>
-
-        <section class="form-section">
-            <div class="input-group">
-                <input type="text" id="title" placeholder="Event Title">
-            </div>
-            <div class="input-row">
-                <div class="input-group">
-                    <input type="date" id="date">
-                </div>
-                <div class="input-group">
-                    <input type="time" id="time">
-                </div>
-            </div>
-            <button class="btn-primary" onclick="addEvent(event)">Add Event</button>
-        </section>
 
         <section class="list-section">
             <ul id="eventList"></ul>

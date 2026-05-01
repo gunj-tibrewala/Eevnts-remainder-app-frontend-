@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Event</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="add-event.html">Add Event</a></li>
+        </ul>
+    </nav>
+    <main class="container">
+        <header>
+            <h1>Add New Event</h1>
+        </header>
+
+        <section class="form-section">
+            <div class="input-group">
+                <input type="text" id="title" placeholder="Event Title">
+            </div>
+            <div class="input-row">
+                <div class="input-group">
+                    <input type="date" id="date">
+                </div>
+                <div class="input-group">
+                    <input type="time" id="time">
+                </div>
+            </div>
+            <button class="btn-primary" onclick="addEvent(event)">Add Event</button>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

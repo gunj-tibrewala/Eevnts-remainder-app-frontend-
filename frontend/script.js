@@ -1,5 +1,10 @@
-// Load events on initial page load
-document.addEventListener('DOMContentLoaded', loadEvents);
+// Load events on initial page load if we are on the Home page
+document.addEventListener('DOMContentLoaded', () => {
+    let list = document.getElementById("eventList");
+    if (list !== null) {
+        loadEvents();
+    }
+});
 
 async function addEvent(event) {
     let titleInput = document.getElementById("title");
@@ -30,6 +35,12 @@ async function addEvent(event) {
             body: JSON.stringify(eventData)
         });
 
+        if (response.status === 400) {
+            let errorData = await response.json();
+            alert(errorData.error);
+            return;
+        }
+
         let data = await response.json();
         
         // Clear inputs
@@ -37,7 +48,10 @@ async function addEvent(event) {
         dateInput.value = "";
         timeInput.value = "";
         
-        loadEvents();
+        alert("Event added successfully!");
+        
+        // Redirect to Home page
+        window.location.href = "index.html";
     } catch (error) {
         console.log("Fetch error: ", error);
         alert("Failed to connect to server");
