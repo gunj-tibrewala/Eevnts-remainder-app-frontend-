@@ -60,52 +60,77 @@ async function addEvent(event) {
 
 async function loadEvents() {
     let list = document.getElementById("eventList");
+    let pastList = document.getElementById("pastEventList");
 
     try {
         let response = await fetch("http://127.0.0.1:5000/get-events");
         let data = await response.json();
         
-        list.innerHTML = "";
+        if(list) list.innerHTML = "";
+        if(pastList) pastList.innerHTML = "";
 
-        if (data.length === 0) {
-            list.innerHTML = "<p>No upcoming events.</p>";
-            return;
+        let now = new Date();
+        let upcoming = [];
+        let past = [];
+
+        data.forEach(event => {
+            let eventDateTime = new Date(`${event.date}T${event.time}`);
+            if (eventDateTime >= now) {
+                upcoming.push(event);
+            } else {
+                past.push(event);
+            }
+        });
+
+        if (list) {
+            if (upcoming.length === 0) {
+                list.innerHTML = "<p style='color: var(--text-muted)'>No upcoming events.</p>";
+            } else {
+                upcoming.forEach(event => list.appendChild(createEventElement(event, false)));
+            }
         }
 
-        for (let i = 0; i < data.length; i++) {
-            let event = data[i];
-            
-            let li = document.createElement("li");
-            
-            let detailsDiv = document.createElement("div");
-            
-            let titleSpan = document.createElement("div");
-            titleSpan.className = "event-title";
-            titleSpan.innerText = event.title;
-            
-            let timeSpan = document.createElement("div");
-            timeSpan.className = "event-time";
-            timeSpan.innerText = event.date + " at " + event.time;
-
-            let deleteBtn = document.createElement("button");
-            deleteBtn.className = "btn-delete";
-            deleteBtn.innerText = "Delete";
-            // Create an arrow function for the click event
-            deleteBtn.onclick = () => {
-                deleteEvent(event.id);
-            };
-
-            detailsDiv.appendChild(titleSpan);
-            detailsDiv.appendChild(timeSpan);
-            
-            li.appendChild(detailsDiv);
-            li.appendChild(deleteBtn);
-            
-            list.appendChild(li);
+        if (pastList) {
+            if (past.length === 0) {
+                pastList.innerHTML = "<p style='color: var(--text-muted)'>No past events.</p>";
+            } else {
+                past.forEach(event => pastList.appendChild(createEventElement(event, true)));
+            }
         }
     } catch (error) {
         console.log("Fetch error: ", error);
     }
+}
+
+function createEventElement(event, isPast) {
+    let li = document.createElement("li");
+    if (isPast) li.className = "past-event";
+    
+    let detailsDiv = document.createElement("div");
+    detailsDiv.className = "event-details";
+    
+    let titleSpan = document.createElement("div");
+    titleSpan.className = "event-title";
+    titleSpan.innerText = event.title;
+    
+    let timeSpan = document.createElement("div");
+    timeSpan.className = "event-time";
+    timeSpan.innerText = event.date + " at " + event.time;
+
+    let deleteBtn = document.createElement("button");
+    deleteBtn.className = "btn-delete";
+    deleteBtn.innerText = "Delete";
+    deleteBtn.onclick = () => {
+        deleteEvent(event.id);
+    };
+
+    detailsDiv.appendChild(titleSpan);
+    detailsDiv.appendChild(timeSpan);
+    
+    li.appendChild(detailsDiv);
+    li.appendChild(deleteBtn);
+    
+    return li;
 }
 
 async function deleteEvent(eventId) {
