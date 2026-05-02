@@ -1,2 +1,2 @@
 // This file acts as environment variables for the frontend
-const API_BASE_URL = "http://127.0.0.1:5000";
+const API_BASE_URL = "https://events-remainder-app-backend-p7r0r27zs-gunj-tibrewalas-projects.vercel.app";
