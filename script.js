@@ -1,10 +1,42 @@
-// Load events on initial page load if we are on the Home page
+let allEvents = [];
+let notifiedEvents = []; // Using a basic array instead of Set
+
+// Load events on initial page load if we are on the Home page or Past Events page
 document.addEventListener('DOMContentLoaded', () => {
+    // Run the intro wipe animation if the overlay exists
+    if (document.getElementById("wipe-overlay")) {
+        runPixelWipe();
+    }
+
     let list = document.getElementById("eventList");
-    if (list !== null) {
+    let pastList = document.getElementById("pastEventList");
+    if (list !== null || pastList !== null) {
         loadEvents();
+        // Start checking for reminders every 10 seconds
+        setInterval(checkReminders, 10000); 
     }
 });
+
+function checkReminders() {
+    let now = new Date();
+    allEvents.forEach(event => {
+        let eventTime = new Date(`${event.date}T${event.time}`);
+        
+        // Check if event time has just passed and we haven't alerted yet
+        if (eventTime <= now && !notifiedEvents.includes(event.id)) {
+            let diffMs = now - eventTime;
+            
+            // Only alert if the event started within the last 2 minutes (120,000 ms)
+            // This prevents alerting for events that happened days ago
+            if (diffMs >= 0 && diffMs < 120000) { 
+                alert(`⏰ REMINDER: "${event.title}" is happening right now!`);
+            }
+            
+            // Mark as notified so we don't spam the user
+            notifiedEvents.push(event.id);
+        }
+    });
+}
 
 async function addEvent(event) {
     let titleInput = document.getElementById("title");
@@ -27,7 +59,7 @@ async function addEvent(event) {
     };
 
     try {
-        let response = await fetch("http://127.0.0.1:5000/add-event", {
+        let response = await fetch(`${API_BASE_URL}/add-event`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -63,7 +95,7 @@ async function loadEvents() {
     let pastList = document.getElementById("pastEventList");
 
     try {
-        let response = await fetch("http://127.0.0.1:5000/get-events");
+        let response = await fetch(`${API_BASE_URL}/get-events`);
         let data = await response.json();
 
         if (list) list.innerHTML = "";
@@ -72,6 +104,9 @@ async function loadEvents() {
         let now = new Date();
         let upcoming = [];
         let past = [];
+        
+        // Store events globally for the reminder checker
+        allEvents = data;
 
         let countEl = document.getElementById("eventCount");
         if (countEl) {
@@ -111,8 +146,25 @@ function createEventElement(event, isPast) {
     let li = document.createElement("li");
     if (isPast) li.className = "past-event";
 
+    // Parse date for calendar badge
+    let dateObj = new Date(event.date);
+    let month = dateObj.toLocaleString('default', { month: 'short' });
+    let day = dateObj.getDate();
+    // Handle invalid dates gracefully
+    if (isNaN(day)) {
+        month = "TBD";
+        day = "-";
+    }
+
     let detailsDiv = document.createElement("div");
     detailsDiv.className = "event-details";
+
+    let dateBadge = document.createElement("div");
+    dateBadge.className = "event-date-badge";
+    dateBadge.innerHTML = `<div class="event-date-month">${month}</div><div class="event-date-day">${day}</div>`;
+
+    let infoDiv = document.createElement("div");
+    infoDiv.className = "event-info";
 
     let titleSpan = document.createElement("div");
     titleSpan.className = "event-title";
@@ -120,17 +172,20 @@ function createEventElement(event, isPast) {
 
     let timeSpan = document.createElement("div");
     timeSpan.className = "event-time";
-    timeSpan.innerText = "🕒 " + event.date + " at " + event.time;
+    timeSpan.innerText = "🕒 " + event.time;
+
+    infoDiv.appendChild(titleSpan);
+    infoDiv.appendChild(timeSpan);
+
+    detailsDiv.appendChild(dateBadge);
+    detailsDiv.appendChild(infoDiv);
 
     let deleteBtn = document.createElement("button");
     deleteBtn.className = "btn-delete";
-    deleteBtn.innerText = "❌ Delete";
+    deleteBtn.innerText = "❌";
     deleteBtn.onclick = () => {
         deleteEvent(event.id);
     };
-
-    detailsDiv.appendChild(titleSpan);
-    detailsDiv.appendChild(timeSpan);
 
     li.appendChild(detailsDiv);
     li.appendChild(deleteBtn);
@@ -140,7 +195,7 @@ function createEventElement(event, isPast) {
 
 async function deleteEvent(eventId) {
     try {
-        let response = await fetch("http://127.0.0.1:5000/delete-event/" + eventId, {
+        let response = await fetch(`${API_BASE_URL}/delete-event/${eventId}`, {
             method: "DELETE"
         });
 
@@ -150,4 +205,53 @@ async function deleteEvent(eventId) {
         console.log("Delete error: ", error);
         alert("Failed to delete event");
     }
+}
+
+// --- Pixelate Wipe Animation ---
+function runPixelWipe() {
+    const overlay = document.getElementById("wipe-overlay");
+    const grid = document.getElementById("wipe-grid");
+    const sceneA = document.getElementById("wipe-scene-a");
+    if (!overlay || !grid || !sceneA) return;
+
+    const cellSize = 60; // Approximate size of each pixel block
+    const cols = Math.ceil(window.innerWidth / cellSize);
+    const rows = Math.ceil(window.innerHeight / cellSize);
+
+    grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    grid.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+
+    const cells = [];
+    for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+            const cell = document.createElement("div");
+            cell.className = "wipe-cell";
+            grid.appendChild(cell);
+            cells.push({ el: cell, x, y });
+        }
+    }
+
+    // Maximum distance from the center for the wave calculation
+    const maxDistance = Math.hypot(cols / 2, rows / 2);
+
+    // Initial delay before hiding Scene A
+    setTimeout(() => {
+        sceneA.style.opacity = "0";
+
+        // Trigger wave fade out
+        cells.forEach(c => {
+            const distance = Math.hypot(c.x - cols / 2, c.y - rows / 2);
+            // Cells further from center fade later
+            const delay = (distance / maxDistance) * 600; 
+            setTimeout(() => {
+                c.el.style.opacity = "0";
+            }, delay);
+        });
+
+        // Remove the overlay from DOM entirely once animation is complete
+        setTimeout(() => {
+            overlay.remove();
+        }, 1000); 
+
+    }, 1200); // Wait 1.2s looking at Scene A before wiping
 }
