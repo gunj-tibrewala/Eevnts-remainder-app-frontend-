@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById("wipe-overlay")) {
         runPixelWipe();
     }
-
+ 
     let list = document.getElementById("eventList");
     let pastList = document.getElementById("pastEventList");
     if (list !== null || pastList !== null) {
