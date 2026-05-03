@@ -1,6 +1,6 @@
-# EventHive - Frontend
+# Event Hive - Frontend
 
-This is the frontend repository for the EventHive application, built for academic submission. EventHive allows users to create and track upcoming and past events.
+This is the frontend repository for the Event Hive application, built for academic submission. Event Hive allows users to create and track upcoming and past events.
 
 ## Team Members
 * Gunj Tibrewala
