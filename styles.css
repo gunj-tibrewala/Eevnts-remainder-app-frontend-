@@ -9,27 +9,27 @@
 
 body {
     min-height: 100vh;
-    /* Elegant Event Background */
+    /*Event Background */
     background: url('event-bg.png?v=3') no-repeat center center fixed;
-    background-color: #0a0a0a; /* Fallback dark background */
+    background-color: #0a0a0a; /* dark background */
     background-size: cover;
     color: #fdf8f5; /* Light text for dark theme */
-    font-size: 18px; /* Increased base text size */
+    font-size: 18px; 
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* Center vertically */
+    justify-content: center; 
 }
 
 .navbar {
-    background-color: rgba(5, 5, 10, 0.85); /* Dark neon glass */
+    background-color: rgba(5, 5, 10, 0.85); 
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(0, 243, 255, 0.2);
-    padding: 18px 40px; /* Added padding for edges */
+    padding: 18px 40px; /* for edges */
     width: 100%;
     box-shadow: 0 4px 20px rgba(0, 243, 255, 0.15);
-    position: absolute; /* Changed from sticky so it doesn't mess with center align */
+    position: absolute;
     top: 0;
     z-index: 100;
 }
@@ -49,8 +49,8 @@ body {
 .navbar a {
     color: #fdf8f5; /* Light cream */
     text-decoration: none;
-    font-weight: 700; /* Bolder */
-    font-size: 18px; /* Increased */
+    font-weight: 700;
+    font-size: 18px;
     letter-spacing: 0.5px;
     transition: all 0.3s ease;
 }
